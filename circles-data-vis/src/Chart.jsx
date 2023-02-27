@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-
+import data2 from './assets/db.json'
+console.log(data2);
 const Chart = () => {
     useEffect(() => {
         
@@ -10,8 +11,7 @@ const Chart = () => {
       const height = 700;
 
       //Data Fetch local json server
-    const data = await d3.json('http://localhost:5001/access',
-      )
+    const data = data2.access
       
       //Layout Compute Function
       const pack = data => d3.pack()
