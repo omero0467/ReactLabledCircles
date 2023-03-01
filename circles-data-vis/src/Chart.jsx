@@ -242,14 +242,14 @@ const Chart = () => {
     try {
       // event.preventDefault();
       // console.log(NameList);
-
+console.log(import.meta.env.VITE_OPENAI_KEY2);
       // Make a request to ChatGPT
       const response = await fetch("https://api.openai.com/v1/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization:
-            process.env.OPENAI_KEY2,
+         import.meta.env.OPENAI_KEY2,
         },
         body: JSON.stringify({
           model: "text-davinci-003",
