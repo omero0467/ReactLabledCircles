@@ -1,108 +1,108 @@
-{"access":{
-  "children":[
+{
+  "children": [
     {
-      "children":[
+      "children": [
         {
-          "children":[
+          "children": [
             {
-              "children":[
-                {
-                  "children":[],
-                  "title":{"name":"Director Corporate Finance"}
-                },
-                {
-                  "children":[],
-                  "title":{"name":"Director of Finance"}
-                }
-              ],
-              "title":{"name":"Director of Finance"}
+              "children": [],
+              "name": "LPL Financial Advisor"
             },
             {
-              "children":[
-                {
-                  "children":[
-                    {
-                      "children":[],
-                      "title":{"name":"Global Controller"}
-                    },
-                    {
-                      "children":[],
-                      "title":{"name":"Controller"}
-                    }
-                  ],
-                  "title":{"name":"Controller"}
-                },
-                {
-                  "children":[
-                    {
-                      "children":[],
-                      "title":{"name":"Chief Financial Officer"}
-                    },
-                    {
-                      "children":[],
-                      "title":{"name":"Chief Financial Officer & Board Secretary"}
-                    }
-                  ],
-                  "title":{"name":"Chief Financial Officer"}
-                }
-              ],
-              "title":{"name":"Controller"}
+              "children": [],
+              "name": "LPL FINANCIAL ADVISOR"
             }
           ],
-          "title":{"name":"Controller"}
+          "name": "LPL FINANCIAL ADVISOR[SEP]LPL Financial Advisor"
         },
         {
-          "children":[
+          "children": [
             {
-              "children":[
+              "children": [
                 {
-                  "children":[],
-                  "title":{"name":"LPL Financial Advisor"}
+                  "children": [],
+                  "name": "Principal Recruiter and Business Partner "
                 },
                 {
-                  "children":[],
-                  "title":{"name":"LPL FINANCIAL ADVISOR"}
+                  "children": [],
+                  "name": "Principal People Business Partner"
                 }
               ],
-              "title":{"name":"LPL FINANCIAL ADVISOR"}
+              "name": "Principal People Business Partner[SEP]Principal Recruiter and Business Partner "
             },
             {
-              "children":[
+              "children": [
                 {
-                  "children":[
+                  "children": [
                     {
-                      "children":[],
-                      "title":{"name":"Principal Recruiter and Business Partner "}
+                      "children": [
+                        {
+                          "children": [],
+                          "name": "Director Corporate Finance"
+                        },
+                        {
+                          "children": [],
+                          "name": "Director of Finance"
+                        }
+                      ],
+                      "name": "Director Corporate Finance[SEP]Director of Finance"
                     },
                     {
-                      "children":[],
-                      "title":{"name":"Principal People Business Partner"}
+                      "children": [
+                        {
+                          "children": [],
+                          "name": "Chief Financial Officer & Board Secretary"
+                        },
+                        {
+                          "children": [
+                            {
+                              "children": [],
+                              "name": "Chief Financial Officer"
+                            },
+                            {
+                              "children": [
+                                {
+                                  "children": [],
+                                  "name": "Global Controller"
+                                },
+                                {
+                                  "children": [],
+                                  "name": "Controller"
+                                }
+                              ],
+                              "name": "Controller[SEP]Global Controller"
+                            }
+                          ],
+                          "name": "Chief Financial Officer[SEP]Controller[SEP]Global Controller"
+                        }
+                      ],
+                      "name": "Chief Financial Officer[SEP]Chief Financial Officer & Board Secretary[SEP]Controller[SEP]Global Controller"
                     }
                   ],
-                  "title":{"name":"Principal People Business Partner"}
+                  "name": "Chief Financial Officer[SEP]Chief Financial Officer & Board Secretary[SEP]Controller[SEP]Director Corporate Finance[SEP]Director of Finance[SEP]Global Controller"
                 },
                 {
-                  "children":[
+                  "children": [
                     {
-                      "children":[],
-                      "title":{"name":"Interim Chief Executive Officer"}
+                      "children": [],
+                      "name": "Interim Chief Executive Officer"
                     },
                     {
-                      "children":[],
-                      "title":{"name":"Chief Executive Officer"}
+                      "children": [],
+                      "name": "Chief Executive Officer"
                     }
                   ],
-                  "title":{"name":"Chief Executive Officer"}
+                  "name": "Chief Executive Officer[SEP]Interim Chief Executive Officer"
                 }
               ],
-              "title":{"name":"Chief Executive Officer"}
+              "name": "Chief Executive Officer[SEP]Chief Financial Officer[SEP]Chief Financial Officer & Board Secretary[SEP]Controller[SEP]Director Corporate Finance[SEP]Director of Finance[SEP]Global Controller[SEP]Interim Chief Executive Officer"
             }
           ],
-          "title":{"name":"LPL FINANCIAL ADVISOR"}
+          "name": "Chief Executive Officer[SEP]Chief Financial Officer[SEP]Chief Financial Officer & Board Secretary[SEP]Controller[SEP]Director Corporate Finance[SEP]Director of Finance[SEP]Global Controller[SEP]Interim Chief Executive Officer[SEP]Principal People Business Partner[SEP]Principal Recruiter and Business Partner "
         }
       ],
-      "title":{"name":"Controller"}
+      "name": "Chief Executive Officer[SEP]Chief Financial Officer[SEP]Chief Financial Officer & Board Secretary[SEP]Controller[SEP]Director Corporate Finance[SEP]Director of Finance[SEP]Global Controller[SEP]Interim Chief Executive Officer[SEP]LPL FINANCIAL ADVISOR[SEP]LPL Financial Advisor[SEP]Principal People Business Partner[SEP]Principal Recruiter and Business Partner "
     }
   ],
-  "title":{"name":"Root1"}}
+  "name": "Root1"
 }

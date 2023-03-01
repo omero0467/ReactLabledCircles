@@ -70,7 +70,7 @@ h1 {
   color: #242424;
   padding: 10px;
   border-radius: .5rem;
-
+  white-space: wrap;
 }
 
 #tooltip::before{
