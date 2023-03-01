@@ -23,7 +23,7 @@ const Chart = () => {
               // d.children?d.children.length:
               5
           )(
-          d3.hierarchy({ children: [data] })
+          d3.hierarchy(data)
           // .sum(d => d.value)
           // .sort((a, b) => b.value - a.value)
         );
@@ -39,15 +39,16 @@ const Chart = () => {
 
       //Layout init
       const root = pack(data);
+      let Promises = [];
       console.log(root);
-      root.each(async d=>{
-        console.log('root each',d);
-      d.groupName  = d.data.name && await getGroupNameGPT(
-          d.data.name.split("[SEP]").join(", ")
-          );
-        
-      })
+      root.each((d) => {
+        d.data.name = d.data.name.split("[SEP]").join(", ");
+        console.log("root each", d);
+        d.data.name && Promises.push(getGroupNameGPT(d.data.name));
+      });
 
+      const groupNames = await Promise.allSettled(Promises);
+      root.each((d, i) => (d.groupName = groupNames[i]?.value));
       let focus = root;
       let view;
 
@@ -129,8 +130,8 @@ const Chart = () => {
         .join(
           (enter) =>
             enter.append("text").text((d, i) => {
-              console.log('text enter',d);
-              return d.groupName ||'Group Name'
+              console.log("text enter", d);
+              return d.groupName || "Group Name";
             }),
           (update) => update,
           (exit) => exit.remove()
@@ -248,7 +249,7 @@ const Chart = () => {
         headers: {
           "Content-Type": "application/json",
           Authorization:
-            "Bearer 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",
+            process.env.OPENAI_KEY2,
         },
         body: JSON.stringify({
           model: "text-davinci-003",
