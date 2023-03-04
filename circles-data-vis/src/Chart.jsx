@@ -20,7 +20,7 @@ const Chart = () => {
           .padding(2)
           .radius(
             (d) =>
-              // d.children?d.children.length:
+              d.children?d.children.length:
               5
           )(
           d3.hierarchy(data)
@@ -43,8 +43,8 @@ const Chart = () => {
       console.log(root);
       root.each((d) => {
         d.data.name = d.data.name.split("[SEP]").join(", ");
-        console.log("root each", d);
-        d.data.name && Promises.push(getGroupNameGPT(d.data.name));
+        // console.log("root each", d);
+        // d.data.name && Promises.push(getGroupNameGPT(d.data.name));
       });
 
       const groupNames = await Promise.allSettled(Promises);
@@ -130,7 +130,7 @@ const Chart = () => {
         .join(
           (enter) =>
             enter.append("text").text((d, i) => {
-              console.log("text enter", d);
+              // console.log("text enter", d);
               return d.groupName || "Group Name";
             }),
           (update) => update,
@@ -238,18 +238,20 @@ const Chart = () => {
     console.log(e.target.href);
   }
 
+const Key = (import.meta.env).VITE_KEY
+console.log(import.meta.env.MODE);
+console.log(import.meta.env.BASE_URL);
   const getGroupNameGPT = async (NameList) => {
     try {
       // event.preventDefault();
       // console.log(NameList);
-console.log(import.meta.env.VITE_OPENAI_KEY2);
       // Make a request to ChatGPT
       const response = await fetch("https://api.openai.com/v1/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization:
-         import.meta.env.OPENAI_KEY2,
+        Key,
         },
         body: JSON.stringify({
           model: "text-davinci-003",

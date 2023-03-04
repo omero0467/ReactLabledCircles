@@ -5,7 +5,16 @@
   box-sizing: border-box;
   color-scheme: light dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background: hsl(224, 32%, 12%);
+  background-image: conic-gradient(
+    from 0deg at 50% 50%,
+    blue,
+    purple,
+    purple,
+    blue
+  );
+
+  background-blend-mode: multiply;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -37,7 +46,7 @@ body {
   min-width: 320px;
   min-height: 100vh;
   /* min-block-size: 100dvh; */
-  background: hsl(224, 32%, 12%);
+  /* background: hsl(224, 32%, 12%);
   background-image: conic-gradient(
     from 0deg at 50% 50%,
     blue,
@@ -46,7 +55,7 @@ body {
     blue
   );
 
-  background-blend-mode: multiply;
+  background-blend-mode: multiply; */
 }
 
 h1 {
