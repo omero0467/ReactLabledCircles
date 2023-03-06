@@ -39,7 +39,7 @@ const Chart = () => {
 
       //Layout init
       const root = pack(data);
-
+        console.log(root);
       //Get dynamic group name from gpt
       let Promises = [];
       root.each((d) => {
