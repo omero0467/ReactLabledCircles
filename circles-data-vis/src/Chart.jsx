@@ -234,7 +234,7 @@ const Chart = () => {
     e.target.href = url;
   }
 
-  const Key = import.meta.env.VITE_OPENAI_KEY;
+  const Key = process.env.VITE_OPENAI_KEY;
   console.log(import.meta.env.MODE);
   console.log(import.meta.env.BASE_URL);
 
