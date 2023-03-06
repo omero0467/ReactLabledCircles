@@ -46,17 +46,9 @@ body {
   min-width: 320px;
   min-height: 100vh;
   min-block-size: 100dvh;
- background: hsl(224, 32%, 12%);
-  background-image: conic-gradient(
-    from 0deg at 50% 50%,
-    blue,
-    purple,
-    purple,
-    blue
-  );
- 
-
-  background-blend-mode: multiply; 
+  background: hsl(224, 32%, 12%);
+  background: linear-gradient(0deg, rgba(0,0,47,1) 0%, rgba(6,6,66,1) 35%, rgba(12,40,102,1) 100%);
+    background-blend-mode: multiply; 
 }
 
 h1 {

@@ -1,5 +1,5 @@
-import React, { useEffect, useRef } from "react";
 import * as d3 from "d3";
+import React, { useEffect, useRef } from "react";
 import data2 from "./assets/db.json";
 
 const Chart = () => {
@@ -17,15 +17,15 @@ const Chart = () => {
         d3
           .pack()
           .size([width, height])
-          .padding(2)
+          .padding(1)
           .radius(
             (d) =>
-              // d.children?d.children.length:
-              20
+              d.children?d.children.length:
+              200
           )(
           d3.hierarchy(data)
-          // .sum(d => d.value)
-          // .sort((a, b) => b.value - a.value)
+          .sum(d => d.size)
+          .sort((a, b) => b.size - a.size)
         );
 
       //Zoom Configuration
@@ -39,15 +39,17 @@ const Chart = () => {
 
       //Layout init
       const root = pack(data);
+
+      //Get dynamic group name from gpt
       let Promises = [];
       root.each((d) => {
         d.data.name = d.data.name.split("[SEP]");
+        Promises.push(getGroupNameGPT(d.data.name))
       });
-      
+
       const groupNames = await Promise.allSettled(Promises);
       root.each((d, i) => (d.groupName = groupNames[i]?.value));
-      console.log(root);
-      let focus = root;
+      let focus = root; 
       let view;
 
       //Color Assigning function
@@ -105,12 +107,14 @@ const Chart = () => {
         })
         .on("mouseover", function (e) {
           d3.select(this).attr("stroke", "#000");
-          console.log(d3.select(this).datum().data.children.map((el) => el.name).flat().splice(0,5).join(', '))
           tooltip.select("#titles").text((d) =>
             d3
               .select(this)
               .datum()
-              .data.children.map((el) => el.name).flat().splice(0,5).join(', ')
+              .data.children.map((el) => el.name)
+              .flat()
+              .splice(0, 5)
+              .join(", ")
           );
         })
         .on("mouseout", function () {
@@ -129,7 +133,6 @@ const Chart = () => {
         .join(
           (enter) =>
             enter.append("text").text((d, i) => {
-              // console.log("text enter", d);
               return d.groupName || "Group Name";
             }),
           (update) => update,
@@ -161,18 +164,15 @@ const Chart = () => {
 
       //Zoom Event Handler
       function zoom(event, d) {
-        // console.log(d.data.title.name);
         const focus0 = focus;
         event.sourceEvent.preventDefault();
         if (event.sourceEvent.deltaY < 0) {
-          // console.log(event.sourceEvent.deltaY);
           focus = d.parent;
         } else if (event.sourceEvent.deltaY > 0) {
           focus = d;
         } else if (focus !== d) {
           focus = d;
         }
-        // console.log(`focus is ${d.data.name}`,focus);
 
         const transition = svg
           .transition()
@@ -194,6 +194,7 @@ const Chart = () => {
           .on("end", function (d) {
             if (d.parent !== focus) this.style.display = "none";
           });
+
         node
           .attr("pointer-events", (d) => {
             if (!d.children) {
@@ -206,7 +207,6 @@ const Chart = () => {
           })
           .transition(transition)
           .style("fill-opacity", (d) => {
-            // console.log("Dd",d.depth);
             if (d.parent === focus) {
               return 1;
             } else if (d.parent.depth === focus.depth - 1) {
@@ -228,29 +228,26 @@ const Chart = () => {
   const titleSpan = useRef(null);
 
   function handleDownload(e) {
-    console.log(titleSpan.current.innerText);
     const blob = new Blob([titleSpan.current.innerText], {
       type: "text/csv;charset=utf-8;",
     });
     const url = URL.createObjectURL(blob);
     e.target.href = url;
-    console.log(e.target.href);
   }
 
-const Key = (import.meta.env).VITE_KEY
-console.log(import.meta.env.MODE);
-console.log(import.meta.env.BASE_URL);
+  const Key = import.meta.env.VITE_KEY;
+  console.log(import.meta.env.MODE);
+  console.log(import.meta.env.BASE_URL);
+
   const getGroupNameGPT = async (NameList) => {
     try {
       // event.preventDefault();
-      // console.log(NameList);
       // Make a request to ChatGPT
       const response = await fetch("https://api.openai.com/v1/completions", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization:
-        Key,
+          Authorization: Key,
         },
         body: JSON.stringify({
           model: "text-davinci-003",
@@ -263,12 +260,7 @@ console.log(import.meta.env.BASE_URL);
 
       // Get the suggested name from the response
       const data = await response.json();
-      // console.log(data);
       const name = data.choices[0].text.trim();
-
-      // console.log(name);
-      // Display the suggested name to the user
-      // alert(`Suggested name for the provided group of job titles: ${name}`);
       return name;
     } catch (err) {
       return console.error(err);
