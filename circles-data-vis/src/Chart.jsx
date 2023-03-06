@@ -235,12 +235,7 @@ const Chart = () => {
   }
 
   const Key = import.meta.env.VITE_OPENAI_KEY;
-  console.log(import.meta.env.MODE);
-  console.log(import.meta.env);
-  console.log(import.meta.env.BASE_URL);
-  console.log(Key);
-  console.log(Key.substring(1,Key.length-1));
-
+  
   const getGroupNameGPT = async (NameList) => {
     try {
       // event.preventDefault();
