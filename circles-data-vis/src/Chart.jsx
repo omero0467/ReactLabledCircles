@@ -238,6 +238,7 @@ const Chart = () => {
   console.log(import.meta.env.MODE);
   console.log(import.meta.env);
   console.log(import.meta.env.BASE_URL);
+  console.log(Key.substring(1,Key.length-1));
 
   const getGroupNameGPT = async (NameList) => {
     try {
