@@ -24,6 +24,10 @@ Here's a live preview on netlify https://main--roaring-speculoos-e8521c.netlify.
 
 
 ## Notes
-* Loading might take a second 
+
 * Might remove chatGPT feature due to maintainance costs
 
+
+## Screenshots
+- [Screenshot 1](https://github.com/omero0467/ReactLabledCircles/blob/main/Screenshot%202023-03-06%20at%2016.42.46.png)
+- [Screenshot 2](https://github.com/omero0467/ReactLabledCircles/blob/main/Screenshot%202023-03-06%20at%2016.43.34.png)
