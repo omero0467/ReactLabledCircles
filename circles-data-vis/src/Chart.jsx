@@ -39,7 +39,6 @@ const Chart = () => {
 
       //Layout init
       const root = pack(data);
-        console.log(root);
       //Get dynamic group name from gpt
       let Promises = [];
       root.each((d) => {
@@ -235,7 +234,7 @@ const Chart = () => {
     e.target.href = url;
   }
 
-  const Key = import.meta.env.VITE_KEY;
+  const Key = import.meta.env.OPENAI_KEY;
   console.log(import.meta.env.MODE);
   console.log(import.meta.env.BASE_URL);
 
