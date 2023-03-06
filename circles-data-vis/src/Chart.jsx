@@ -20,8 +20,8 @@ const Chart = () => {
           .padding(2)
           .radius(
             (d) =>
-              d.children?d.children.length:
-              5
+              // d.children?d.children.length:
+              20
           )(
           d3.hierarchy(data)
           // .sum(d => d.value)
@@ -40,15 +40,13 @@ const Chart = () => {
       //Layout init
       const root = pack(data);
       let Promises = [];
-      console.log(root);
       root.each((d) => {
-        d.data.name = d.data.name.split("[SEP]").join(", ");
-        // console.log("root each", d);
-        // d.data.name && Promises.push(getGroupNameGPT(d.data.name));
+        d.data.name = d.data.name.split("[SEP]");
       });
-
+      
       const groupNames = await Promise.allSettled(Promises);
       root.each((d, i) => (d.groupName = groupNames[i]?.value));
+      console.log(root);
       let focus = root;
       let view;
 
@@ -77,6 +75,7 @@ const Chart = () => {
 
       const tooltip = d3.select("#tooltip");
       tooltip.style("left", width + "px");
+
       //Circles Initial
       const node = svg
         .append("g")
@@ -106,12 +105,12 @@ const Chart = () => {
         })
         .on("mouseover", function (e) {
           d3.select(this).attr("stroke", "#000");
-          // console.log(d3.select(this).datum());
+          console.log(d3.select(this).datum().data.children.map((el) => el.name).flat().splice(0,5).join(', '))
           tooltip.select("#titles").text((d) =>
             d3
               .select(this)
               .datum()
-              .data.children.map((el) => el.name.split("[SEP]"))
+              .data.children.map((el) => el.name).flat().splice(0,5).join(', ')
           );
         })
         .on("mouseout", function () {
@@ -141,7 +140,7 @@ const Chart = () => {
         .attr("id", (d, i) => `group${i}`);
 
       //Display Initial
-      zoomTo([root.x, root.y, root.r * 4]);
+      zoomTo([root.x, root.y, root.r * 3]);
 
       //Zoom transition
       function zoomTo(v) {
@@ -280,7 +279,7 @@ console.log(import.meta.env.BASE_URL);
     <div id="chart">
       <div id="tooltip">
         <b>Titles: </b>
-        <span ref={titleSpan} id="titles"></span>
+        <p ref={titleSpan} id="titles"></p>
         <div>
           <a href="" onClick={handleDownload} download="Titles.csv">
             Export
