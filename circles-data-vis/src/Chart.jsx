@@ -249,7 +249,7 @@ const Chart = () => {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          Authorization: Key.substring(1,Key.length-1),
+          Authorization: Key,
         },
         body: JSON.stringify({
           model: "text-davinci-003",
