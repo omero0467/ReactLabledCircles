@@ -41,7 +41,7 @@ a:hover {
 
 body {
   margin: 0;
-  display: flex;
+  /* display: flex; */
   place-items: center;
   min-width: 320px;
   min-height: 100vh;
@@ -59,10 +59,6 @@ h1 {
 #chart{
   position: relative;
 }
-/* 
-#chart > svg {
-  width:100%
-} */
 
 #tooltip{
   width: min-content;
@@ -72,13 +68,13 @@ h1 {
   color: #242424;
   padding: 10px;
   border-radius: .5rem;
-  white-space: wrap;
+  margin-left: 10px;
+  /* white-space: wrap; */
 }
 
 #tooltip::before{
   content: '';
   position: absolute;
-  /* top:0; */
   left: -25px;
   border: 15px solid;
   border-color: #0000 #fff #0000 #0000;

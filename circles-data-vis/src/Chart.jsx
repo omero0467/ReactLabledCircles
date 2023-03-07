@@ -11,45 +11,22 @@ const Chart = () => {
 
       //Data Fetch local json server
       const data = data2;
+      data.size = 161;
 
       //Layout Compute Function
       const pack = (data) =>
-        d3
-          .pack()
-          .size([width, height])
-          .padding(1)
-          .radius(
-            (d) =>
-              d.children?d.children.length:
-              200
-          )(
-          d3.hierarchy(data)
-          .sum(d => d.size)
-          .sort((a, b) => b.size - a.size)
+        d3.pack().size([width, height]).padding(2)(
+          d3
+            .hierarchy(data)
+            .sum((d) => d.size)
+            .sort((a, b) => b.value - a.value)
         );
 
       //Zoom Configuration
-      const zoomConfig = d3
-        .zoom()
-        .extent([
-          [0, 0],
-          [width, height],
-        ])
-        .on("zoom", zoom);
 
       //Layout init
       const root = pack(data);
-
-      //Get dynamic group name from gpt
-      let Promises = [];
-      root.each((d) => {
-        d.data.name = d.data.name.split("[SEP]");
-        Promises.push(getGroupNameGPT(d.data.name))
-      });
-
-      const groupNames = await Promise.allSettled(Promises);
-      root.each((d, i) => (d.groupName = groupNames[i]?.value));
-      let focus = root; 
+      let focus = root;
       let view;
 
       //Color Assigning function
@@ -60,24 +37,31 @@ const Chart = () => {
           "hsl(290.5882352941176, 100%, 90%)",
           "hsl(266, 100%, 59.411764705882355%)",
         ]);
-      // .interpolate(d3.interpolateHsl)
 
       //Svg Element init
       const svg = d3
         .select("#chart")
         .append("svg")
-        .attr("height", height)
-        .attr("width", width)
         .attr("viewBox", `-${width / 2} -${height / 2} ${width} ${height}`)
         .style("display", "block")
-        .style("border-radius", ".3rem")
-        .style("margin", "0 -14px")
         .style("background", color(0))
-        .style("cursor", "pointer");
+        .style("cursor", "pointer")
+        .on("zoom", zoom);
 
       const tooltip = d3.select("#tooltip");
-      tooltip.style("left", width + "px");
+      tooltip.style("left", "100%");
 
+      const innerSpace = svg
+        .append("g")
+        .classed("inner_space", true)
+        .attr("transform", `translate(0,0)`)
+        .call();
+
+      innerSpace
+        .append("rect")
+        .attr("width", width)
+        .attr("height", height)
+        .attr("fill", "transparent");
       //Circles Initial
       const node = svg
         .append("g")
@@ -85,44 +69,18 @@ const Chart = () => {
         .data(root.descendants().slice(1))
         .join("circle")
         .attr("fill", (d) => (d.children ? color(d.depth) : "white"))
-        .style("fill-opacity", (d) => {
-          if (d.parent === focus) {
-            return 1;
-          } else if (d.parent.depth === focus.depth - 1) {
-            return 1;
-          } else if (d.depth === focus.depth - 1) {
-            return 1;
-          } else {
-            return 0;
-          }
-        })
-        .attr("pointer-events", (d) => {
-          if (!d.children) {
-            return "none";
-          } else if (d.depth >= focus.depth + 2) {
-            return "none";
-          } else {
-            return null;
-          }
-        })
-        .on("mouseover", function (e) {
+        .attr("pointer-events", (d) => (!d.children ? "none" : null))
+        .on("mouseover", function () {
           d3.select(this).attr("stroke", "#000");
-          tooltip.select("#titles").text((d) =>
-            d3
-              .select(this)
-              .datum()
-              .data.children.map((el) => el.name)
-              .flat()
-              .splice(0, 5)
-              .join(", ")
-          );
         })
         .on("mouseout", function () {
           d3.select(this).attr("stroke", null);
-        });
-      node.call(zoomConfig);
+        })
+        .on(
+          "click",
+          (event, d) => focus !== d && (zoom(event, d), event.stopPropagation())
+        );
 
-      //Labels Initial
       const label = svg
         .append("g")
         .style("font", "10px sans-serif")
@@ -130,20 +88,13 @@ const Chart = () => {
         .attr("text-anchor", "middle")
         .selectAll("text")
         .data(root.descendants())
-        .join(
-          (enter) =>
-            enter.append("text").text((d, i) => {
-              return d.groupName || "Group Name";
-            }),
-          (update) => update,
-          (exit) => exit.remove()
-        )
+        .join("text")
         .style("fill-opacity", (d) => (d.parent === root ? 1 : 0))
         .style("display", (d) => (d.parent === root ? "inline" : "none"))
-        .attr("id", (d, i) => `group${i}`);
-
+        .text((d) => "Group Name");
       //Display Initial
-      zoomTo([root.x, root.y, root.r * 3]);
+
+      zoomTo([root.x, root.y, root.r * 2]);
 
       //Zoom transition
       function zoomTo(v) {
@@ -162,21 +113,14 @@ const Chart = () => {
         node.attr("r", (d) => d.r * k);
       }
 
-      //Zoom Event Handler
       function zoom(event, d) {
         const focus0 = focus;
-        event.sourceEvent.preventDefault();
-        if (event.sourceEvent.deltaY < 0) {
-          focus = d.parent;
-        } else if (event.sourceEvent.deltaY > 0) {
-          focus = d;
-        } else if (focus !== d) {
-          focus = d;
-        }
+
+        focus = d;
 
         const transition = svg
           .transition()
-          .duration(event.altKey ? 7500 : 500)
+          .duration(event.altKey ? 7500 : 750)
           .tween("zoom", (d) => {
             const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
             return (t) => zoomTo(i(t));
@@ -193,29 +137,6 @@ const Chart = () => {
           })
           .on("end", function (d) {
             if (d.parent !== focus) this.style.display = "none";
-          });
-
-        node
-          .attr("pointer-events", (d) => {
-            if (!d.children) {
-              return "none";
-            } else if (d.depth >= focus.depth + 2) {
-              return "none";
-            } else {
-              return null;
-            }
-          })
-          .transition(transition)
-          .style("fill-opacity", (d) => {
-            if (d.parent === focus) {
-              return 1;
-            } else if (d.parent.depth === focus.depth - 1) {
-              return 1;
-            } else if (d.depth === focus.depth - 1) {
-              return 1;
-            } else {
-              return 0;
-            }
           });
       }
     }
